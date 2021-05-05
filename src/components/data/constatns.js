@@ -1,0 +1,1 @@
+export const FEEDBACK_OPTTIONS = ['good', 'neutral', 'bed']
