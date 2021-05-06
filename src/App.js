@@ -1,10 +1,10 @@
 
 import { Component } from 'react'
-import Section from './components/Section/Section'
-import FeedbackOptions from './components/FeedbackOptions/FeedbackOptions'
-import Section from './components/Section/Section'
-import { FEEDBACK_OPTTIONS } from './components/data/constatns'
- 
+import FeedbackOptions from '../src/components/Feedbackoptions/FeedbackOptions';
+import Section from '../src/components/Section.js/Section';
+import Statistics from './components/Statistics/Statistics.js';
+import { FEEDBACK_OPTTIONS } from './components/data/constatns';
+
 
 class App extends Component {
     state = {
@@ -13,17 +13,40 @@ class App extends Component {
         bed: 0
     }
     handleFeedback = ({ target }) => {
-        const { feedback } = target.dataset
-        this.setStaete((prevState) => ({ [feedback]: prevState[feedback]+ 1 }))
+        const { feedback } = target.dataset;
+        this.setState(prevState => ({ [feedback]: prevState[feedback] + 1 }))
+    };
+    countTotalFeeedback = () => {
+        const { good, neutral, bad } = this.state;
+        return good + neutral + bad;
     }
+    countPositivePercantage = () => {
+        const { good } = this.state;
+        const total = this.countTotalFeeedback();
+        return total ? Math.round((good / total) * 100) : 0;
+    };
     render() {
-        <div>
-            <Section title="Please leave Feedback">
-                <FeedbackOptions options={ FEEDBACK_OPTTIONS } />
-            </Section>
-        </div>
-    
+        const { good, neutral, bad } = this.state;
+        const total = this.countTotalFeeedback();
+        const positivePercantage = this.countPositivePercantage();
+        return (
+            <div>
+                <Section title="Please leave Feedback">
+                    <FeedbackOptions options={FEEDBACK_OPTTIONS} onLeaveFeedback={this.handleFeedback} />
+                </Section>
+                <Section title='Statistics'>
+                    <Statistics
+                        good={good}
+                        neutral={neutral}
+                        bad={bad}
+                        total={total}
+                        positivePercantage={positivePercantage}
+                    />
+                </Section>
+            </div>
+        );
+
     }
-   
 }
-export default App
+
+export default App;
