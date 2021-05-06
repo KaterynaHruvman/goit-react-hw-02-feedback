@@ -5,13 +5,16 @@ import Section from '../src/components/Section.js/Section';
 import Statistics from './components/Statistics/Statistics.js';
 import { FEEDBACK_OPTTIONS } from './components/data/constatns';
 
+import './styles.css'
+
+
 
 class App extends Component {
     state = {
         good: 0,
         neutral: 0,
-        bed: 0
-    }
+        bad: 0
+    };
     handleFeedback = ({ target }) => {
         const { feedback } = target.dataset;
         this.setState(prevState => ({ [feedback]: prevState[feedback] + 1 }))
@@ -30,7 +33,7 @@ class App extends Component {
         const total = this.countTotalFeeedback();
         const positivePercantage = this.countPositivePercantage();
         return (
-            <div>
+            <div className="Feedback">
                 <Section title="Please leave Feedback">
                     <FeedbackOptions options={FEEDBACK_OPTTIONS} onLeaveFeedback={this.handleFeedback} />
                 </Section>
